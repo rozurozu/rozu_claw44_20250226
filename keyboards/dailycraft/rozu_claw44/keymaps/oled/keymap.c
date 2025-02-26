@@ -109,8 +109,11 @@ void render_layer_state(void) {
         case _LOWER:
             oled_write_ln_P(PSTR("Layer: Lower"), false);
             break;
-        case _ADJUST:
-            oled_write_ln_P(PSTR("Layer: Adjust"), false);
+        case _GAME1:
+            oled_write_ln_P(PSTR("Layer: Game1"), false);
+            break;
+        case _GAME2:
+            oled_write_ln_P(PSTR("Layer: Game2"), false);
             break;
         default:
             oled_write_ln_P(PSTR("Layer: Undefined"), false);
