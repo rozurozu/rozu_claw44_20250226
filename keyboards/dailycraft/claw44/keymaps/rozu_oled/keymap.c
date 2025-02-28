@@ -15,6 +15,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include QMK_KEYBOARD_H
 #include <stdio.h>
+#include <print.h>
 #include "os_detection.h"
 
 // Each layer gets a name for readability, which is then used in the keymap matrix below.
@@ -37,13 +38,15 @@ enum layer_number {
 
 #define KC_L_SPC LT(_LOWER, KC_SPC)  // lower
 #define KC_R_ENT LT(_RAISE, KC_ENT)  // raise
+#define KC_1_ENT LT(_MAC1, KC_ENT)  // raise
+#define KC_2_SPC LT(_MAC2, KC_SPC)  // lower
 #define KC_G_JA LGUI_T(KC_LNG1)      // cmd or win
-#define KC_G_EN LGUI_T(KC_LNG2)      // cmd or win
+#define KC_A_EN ALT_T(KC_LNG2)      // cmd or win
 #define KC_C_BS LCTL_T(KC_BSPC)      // ctrl
 #define KC_A_DEL ALT_T(KC_DEL)       // alt
 #define KC_ KC_TRNS
 #define KC_RST RESET
-#define KC_GAME2 LT(_GAME2, KC_DEL)   
+#define KC_GAME2 LM(_GAME2, KC_DEL)   
 #define KC_OMG LT(_OMG, KC_0)   
 
 // OSの状態を保存する変数
@@ -58,7 +61,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+---------+--------+---------+--------|   |--------+---------+--------+---------+--------+--------|
      KC_LSFT, KC_Z   , KC_X    , KC_C   , KC_V    , KC_B   ,     KC_N   , KC_M    , KC_COMM, KC_DOT  , KC_SLSH, KC_RSFT,
   //`--------+--------+---------+--------+---------+--------/   \--------+---------+--------+---------+--------+--------'
-                       KC_A_DEL, KC_G_EN, KC_L_SPC, KC_C_BS,     KC_C_BS, KC_R_ENT, KC_G_JA, KC_A_DEL
+                       KC_A_DEL, KC_A_EN, KC_L_SPC, KC_C_BS,     KC_C_BS, KC_R_ENT, KC_RGUI, KC_A_DEL
   //                 `----------+--------+---------+--------'   `--------+---------+--------+---------'
   ),
 
@@ -82,7 +85,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+--------+--------+--------+--------|   |--------+--------+--------+--------+--------+--------|
       KC_OMG ,  KC_0  ,   KC_1  , KC_2,    KC_3,   KC_BSPC,     KC_PGDN, LGUI(KC_LEFT), _______, LGUI(KC_RIGHT) , KC_SLSH, _______,
   //`--------+--------+--------+--------+--------+--------/   \--------+--------+--------+--------+--------+--------'
-                       KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS
+                       KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,     KC_TRNS, TG(_GAME1), KC_TRNS, KC_TRNS
   //                  `--------+--------+--------+--------'   `--------+--------+--------+--------
   ),
 
@@ -105,7 +108,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     //|--------+--------+--------+--------+--------+--------|   |--------+--------+--------+--------+--------+--------|
         KC_CAPS, KC_K,     KC_Z,    KC_X,    KC_C,    KC_V,     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
     //`--------+--------+--------+--------+--------+--------/   \--------+--------+--------+--------+--------+--------'
-                         KC_LCTL, KC_LALT, KC_SPC ,  KC_GAME2,     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS
+                         KC_LCTL, KC_LALT, KC_SPC ,  KC_GAME2,   KC_TRNS, TG(_GAME1), KC_TRNS, KC_TRNS
     //                  `--------+--------+--------+--------'   `--------+--------+--------+--------'
     ),
     [_GAME2] = LAYOUT(
@@ -127,7 +130,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+---------+--------+---------+--------|   |--------+---------+--------+---------+--------+--------|
      KC_LSFT, KC_Z   , KC_X    , KC_C   , KC_V    , KC_B   ,     KC_N   , KC_M    , KC_COMM, KC_DOT  , KC_SLSH, KC_RSFT,
   //`--------+--------+---------+--------+---------+--------/   \--------+---------+--------+---------+--------+--------'
-                       KC_A_DEL, KC_G_EN, KC_L_SPC, KC_C_BS,     KC_C_BS, KC_R_ENT, KC_G_JA, KC_A_DEL
+                 KC_A_DEL, CTL_T(KC_LNG2),KC_2_SPC,LGUI_T(KC_LNG1), LALT_T(KC_C_BS),KC_1_ENT, KC_G_JA, KC_A_DEL
   //                 `----------+--------+---------+--------'   `--------+---------+--------+---------'
   ),
 
@@ -157,7 +160,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     [_MAC3] = LAYOUT(
     //,--------+--------+--------+--------+--------+--------.   ,--------+--------+--------+--------+--------+--------.
-        KC_TRNS, KC_TRNS, KC_F7,   KC_F8,   KC_F9,   KC_F12,     KC_PGUP, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+        TG(_MAC0), KC_TRNS, KC_F7,   KC_F8,   KC_F9,   KC_F12,     KC_PGUP, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, TG(_MAC0),
     //|--------+--------+--------+--------+--------+--------|   |--------+--------+--------+--------+--------+--------|
         KC_TRNS, KC_TRNS, KC_F4,   KC_F5,   KC_F6,   KC_F11,     KC_PGDN, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
     //|--------+--------+--------+--------+--------+--------|   |--------+--------+--------+--------+--------+--------|
@@ -214,6 +217,8 @@ void render_layer_state(void) {
 void render_logo(void) {
     static const char PROGMEM logo[] = {0x80, 0x81, 0x82, 0x83, 0x84, 0x85, 0x86, 0x87, 0x88, 0x89, 0x8a, 0x8b, 0x8c, 0x8d, 0x8e, 0x8f, 0x90, 0x91, 0x92, 0x93, 0x94, 0xa0, 0xa1, 0xa2, 0xa3, 0xa4, 0xa5, 0xa6, 0xa7, 0xa8, 0xa9, 0xaa, 0xab, 0xac, 0xad, 0xae, 0xaf, 0xb0, 0xb1, 0xb2, 0xb3, 0xb4, 0xc0, 0xc1, 0xc2, 0xc3, 0xc4, 0xc5, 0xc6, 0xc7, 0xc8, 0xc9, 0xca, 0xcb, 0xcc, 0xcd, 0xce, 0xcf, 0xd0, 0xd1, 0xd2, 0xd3, 0xd4, 0};
     oled_write_P(logo, false);
+
+    uprintf("render_logo\n");
 }
 
 char keylog_str[24]  = {};
@@ -223,24 +228,24 @@ int  keylogs_str_idx = 0;
 const char code_to_name[60] = {' ', ' ', ' ', ' ', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', 'R', 'E', 'B', 'T', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ';', '\'', ' ', ',', '.', '/', ' ', ' ', ' '};
 
 void set_keylog(uint16_t keycode, keyrecord_t *record) {
-    char name = ' ';
-    if (keycode < 60) {
-        name = code_to_name[keycode];
-    }
+    // char name = ' ';
+    // if (keycode < 60) {
+    //     name = code_to_name[keycode];
+    // }
 
-    // update keylog
-    snprintf(keylog_str, sizeof(keylog_str), "%dx%d, k%2d : %c", record->event.key.row, record->event.key.col, keycode, name);
+    // // update keylog
+    // snprintf(keylog_str, sizeof(keylog_str), "%dx%d, k%2d : %c", record->event.key.row, record->event.key.col, keycode, name);
 
-    // update keylogs
-    if (keylogs_str_idx == sizeof(keylogs_str) - 1) {
-        keylogs_str_idx = 0;
-        for (int i = 0; i < sizeof(keylogs_str) - 1; i++) {
-            keylogs_str[i] = ' ';
-        }
-    }
+    // // update keylogs
+    // if (keylogs_str_idx == sizeof(keylogs_str) - 1) {
+    //     keylogs_str_idx = 0;
+    //     for (int i = 0; i < sizeof(keylogs_str) - 1; i++) {
+    //         keylogs_str[i] = ' ';
+    //     }
+    // }
 
-    keylogs_str[keylogs_str_idx] = name;
-    keylogs_str_idx++;
+    // keylogs_str[keylogs_str_idx] = name;
+    // keylogs_str_idx++;
 }
 
 const char *read_keylog(void) { return keylog_str; }
@@ -249,25 +254,11 @@ const char *read_keylogs(void) { return keylogs_str; }
 bool oled_task_user(void) {
     if (is_keyboard_master()) {
         render_layer_state();
-        oled_write_ln(read_keylog(), false);
-        oled_write_ln(read_keylogs(), false);
+        // oled_write_ln(read_keylog(), false);
+        // oled_write_ln(read_keylogs(), false);
     } else {
         render_logo();
     }
-    
-    // OSの状態を表示
-    switch (current_os_variant) {
-        case OS_MACOS:
-            oled_write_P(PSTR("OS: macOS\n"), false);
-            break;
-        case OS_WINDOWS:
-            oled_write_P(PSTR("OS: Windows\n"), false);
-            break;
-        default:
-            oled_write_P(PSTR("OS: Unknown\n"), false);
-            break;
-    }
-    
     return false;
 }
 
@@ -275,43 +266,37 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     if (record->event.pressed) {
         set_keylog(keycode, record);
     }
+    //デバッグ用
+    // current_os_variant = detected_host_os();
+    // uprintf("current_layer: %d\n", get_highest_layer(layer_state));
+    // uprintf("current_os_variant: %d\n", current_os_variant);
     return true;
 }
 
 oled_rotation_t oled_init_user(oled_rotation_t rotation) {
-    if (!is_keyboard_master()) return OLED_ROTATION_180;
+    if (!is_keyboard_master()) return OLED_ROTATION_180; 
     return rotation;
 }
 
-// OS検出時のコールバック
-void process_detected_host_os_kb(os_variant_t host_os) {
-    current_os_variant = host_os;
+void matrix_init_kb(void) {
+    wait_ms(1000);
+    // OSの検出を行う
+    current_os_variant = detected_host_os();
     
     // OSに応じてレイヤーを切り替え
-    switch (host_os) {
-        case OS_MACOS:
+    switch (current_os_variant) {
+        case 3:
             layer_clear();  // 全レイヤーをクリア
             layer_on(_MAC0);    // Mac用のベースレイヤーを有効化
-            layer_on(_MAC1);    // Mac用の追加レイヤーを有効化
-            layer_on(_MAC2);    // Mac用の追加レイヤーを有効化
-            layer_on(_MAC3);    // Mac用の追加レイヤーを有効化
             break;
-        case OS_WINDOWS:
+        case 2:
             layer_clear();  // 全レイヤーをクリア
             layer_on(_QWERTY);  // Windows用のベースレイヤーを有効化
-            layer_on(_RAISE);  // Windows用のベースレイヤーを有効化
-            layer_on(_LOWER);  // Windows用のベースレイヤーを有効化
-            layer_on(_OMG);  // Windows用のベースレイヤーを有効化
-            layer_on(_GAME1);  // Windows用のベースレイヤーを有効化
-            layer_on(_GAME2);  // Windows用のベースレイヤーを有効化
             break;
         default:
             // デフォルトはQWERTYレイヤー
             layer_clear();
-            layer_on(_QWERTY);  // Windows用のベースレイヤーを有効化
-            layer_on(_RAISE);  // Windows用のベースレイヤーを有効化
-            layer_on(_LOWER);  // Windows用のベースレイヤーを有効化
-            layer_on(_OMG);  // Windows用のベースレイヤーを有効化
+            layer_on(_QWERTY);
             break;
     }
 }
