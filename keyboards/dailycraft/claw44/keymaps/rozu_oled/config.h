@@ -20,6 +20,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #define MASTER_LEFT
 #define OLED_FONT_H "keyboards/dailycraft/claw44/lib/glcdfont.c"
+// #define VIA_ENABLE
 #define DYNAMIC_KEYMAP_LAYER_COUNT 10
 #define LAYER_STATE_16BIT
 #define SSD1306OLED

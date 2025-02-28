@@ -15,6 +15,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include QMK_KEYBOARD_H
 #include <stdio.h>
+#include "os_detection.h"
 
 // Each layer gets a name for readability, which is then used in the keymap matrix below.
 // The underscores don't mean anything - you can have a layer called STUFF or any other name.
@@ -44,6 +45,9 @@ enum layer_number {
 #define KC_RST RESET
 #define KC_GAME2 LT(_GAME2, KC_DEL)   
 #define KC_OMG LT(_OMG, KC_0)   
+
+// OSの状態を保存する変数
+static os_variant_t current_os_variant = OS_UNSURE;
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_QWERTY] = LAYOUT(
@@ -151,6 +155,18 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //                  `--------+--------+--------+--------'   `--------+--------+--------+--------
   ),
 
+    [_MAC3] = LAYOUT(
+    //,--------+--------+--------+--------+--------+--------.   ,--------+--------+--------+--------+--------+--------.
+        KC_TRNS, KC_TRNS, KC_F7,   KC_F8,   KC_F9,   KC_F12,     KC_PGUP, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+    //|--------+--------+--------+--------+--------+--------|   |--------+--------+--------+--------+--------+--------|
+        KC_TRNS, KC_TRNS, KC_F4,   KC_F5,   KC_F6,   KC_F11,     KC_PGDN, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+    //|--------+--------+--------+--------+--------+--------|   |--------+--------+--------+--------+--------+--------|
+        KC_TRNS, KC_TRNS, KC_F1,   KC_F2,   KC_F3,   KC_F10,     KC_CAPS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+    //`--------+--------+--------+--------+--------+--------/   \--------+--------+--------+--------+--------+--------'
+                         KC_TRNS, KC_TRNS, KC_TRNS , KC_TRNS,     KC_PSCR, KC_TRNS, KC_TRNS, KC_TRNS
+    //                  `--------+--------+--------+--------'   `--------+--------+--------+--------'
+    ),
+
 };
 
 #ifdef OLED_ENABLE
@@ -175,6 +191,8 @@ void render_layer_state(void) {
         case _GAME2:
             oled_write_ln_P(PSTR("Layer: Game2"), false);
             break;
+        
+        // Mac用レイヤー
         case _MAC0:
             oled_write_ln_P(PSTR("Layer: Mac0"), false);
             break;
@@ -187,6 +205,7 @@ void render_layer_state(void) {
         case _MAC3:
             oled_write_ln_P(PSTR("Layer: Mac3"), false);
             break;
+            
         default:
             oled_write_ln_P(PSTR("Layer: Undefined"), false);
     }
@@ -235,6 +254,20 @@ bool oled_task_user(void) {
     } else {
         render_logo();
     }
+    
+    // OSの状態を表示
+    switch (current_os_variant) {
+        case OS_MACOS:
+            oled_write_P(PSTR("OS: macOS\n"), false);
+            break;
+        case OS_WINDOWS:
+            oled_write_P(PSTR("OS: Windows\n"), false);
+            break;
+        default:
+            oled_write_P(PSTR("OS: Unknown\n"), false);
+            break;
+    }
+    
     return false;
 }
 
@@ -248,6 +281,39 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 oled_rotation_t oled_init_user(oled_rotation_t rotation) {
     if (!is_keyboard_master()) return OLED_ROTATION_180;
     return rotation;
+}
+
+// OS検出時のコールバック
+void process_detected_host_os_kb(os_variant_t host_os) {
+    current_os_variant = host_os;
+    
+    // OSに応じてレイヤーを切り替え
+    switch (host_os) {
+        case OS_MACOS:
+            layer_clear();  // 全レイヤーをクリア
+            layer_on(_MAC0);    // Mac用のベースレイヤーを有効化
+            layer_on(_MAC1);    // Mac用の追加レイヤーを有効化
+            layer_on(_MAC2);    // Mac用の追加レイヤーを有効化
+            layer_on(_MAC3);    // Mac用の追加レイヤーを有効化
+            break;
+        case OS_WINDOWS:
+            layer_clear();  // 全レイヤーをクリア
+            layer_on(_QWERTY);  // Windows用のベースレイヤーを有効化
+            layer_on(_RAISE);  // Windows用のベースレイヤーを有効化
+            layer_on(_LOWER);  // Windows用のベースレイヤーを有効化
+            layer_on(_OMG);  // Windows用のベースレイヤーを有効化
+            layer_on(_GAME1);  // Windows用のベースレイヤーを有効化
+            layer_on(_GAME2);  // Windows用のベースレイヤーを有効化
+            break;
+        default:
+            // デフォルトはQWERTYレイヤー
+            layer_clear();
+            layer_on(_QWERTY);  // Windows用のベースレイヤーを有効化
+            layer_on(_RAISE);  // Windows用のベースレイヤーを有効化
+            layer_on(_LOWER);  // Windows用のベースレイヤーを有効化
+            layer_on(_OMG);  // Windows用のベースレイヤーを有効化
+            break;
+    }
 }
 
 #endif
