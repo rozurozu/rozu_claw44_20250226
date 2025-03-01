@@ -46,7 +46,7 @@ enum layer_number {
 #define KC_A_DEL ALT_T(KC_DEL)       // alt
 #define KC_ KC_TRNS
 #define KC_RST RESET
-#define KC_GAME2 LM(_GAME2, KC_DEL)   
+#define KC_GAME2 LT(_GAME2, KC_DEL)   
 #define KC_OMG LT(_OMG, KC_0)   
 
 // OSの状態を保存する変数
@@ -119,7 +119,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     //|--------+--------+--------+--------+--------+--------|   |--------+--------+--------+--------+--------+--------|
         KC_CAPS, KC_J,     KC_1,     KC_2,   KC_3,    KC_H,       KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
     //`--------+--------+--------+--------+--------+--------/   \--------+--------+--------+--------+--------+--------'
-                         KC_TRNS, KC_TRNS, KC_TRNS , KC_TRNS,     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS
+                         KC_LCTL, KC_LALT, KC_SPC , KC_GAME2,     KC_TRNS, TG(_GAME1), KC_TRNS, KC_TRNS
     //                  `--------+--------+--------+--------'   `--------+--------+--------+--------'
     ),
     [_MAC0] = LAYOUT(
