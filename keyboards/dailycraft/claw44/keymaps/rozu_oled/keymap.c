@@ -42,8 +42,9 @@ enum layer_number {
 #define KC_2_SPC LT(_MAC2, KC_SPC)  // lower
 #define KC_G_JA LGUI_T(KC_LNG1)      // cmd or win
 #define KC_A_EN ALT_T(KC_LNG2)      // cmd or win
-#define KC_C_BS LCTL_T(KC_BSPC)      // ctrl
 #define KC_A_DEL ALT_T(KC_DEL)       // alt
+#define KC_C_JA LCTL_T(KC_LNG1)      // ctrl
+#define KC_C_BS LCTL_T(KC_BSPC)      // ctrl
 #define KC_ KC_TRNS
 #define KC_RST RESET
 #define KC_GAME2 LT(_GAME2, KC_DEL)   
@@ -61,7 +62,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+---------+--------+---------+--------|   |--------+---------+--------+---------+--------+--------|
      KC_LSFT, KC_Z   , KC_X    , KC_C   , KC_V    , KC_B   ,     KC_N   , KC_M    , KC_COMM, KC_DOT  , KC_SLSH, KC_RSFT,
   //`--------+--------+---------+--------+---------+--------/   \--------+---------+--------+---------+--------+--------'
-                       KC_A_DEL, KC_A_EN, KC_L_SPC, KC_C_BS,     KC_C_BS, KC_R_ENT, KC_RGUI, KC_A_DEL
+                       KC_A_DEL, KC_A_EN, KC_L_SPC, KC_C_JA,     KC_C_BS, KC_R_ENT, KC_RGUI, KC_A_DEL
   //                 `----------+--------+---------+--------'   `--------+---------+--------+---------'
   ),
 
@@ -130,7 +131,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+---------+--------+---------+--------|   |--------+---------+--------+---------+--------+--------|
      KC_LSFT, KC_Z   , KC_X    , KC_C   , KC_V    , KC_B   ,     KC_N   , KC_M    , KC_COMM, KC_DOT  , KC_SLSH, KC_RSFT,
   //`--------+--------+---------+--------+---------+--------/   \--------+---------+--------+---------+--------+--------'
-                 KC_A_DEL, CTL_T(KC_LNG2),KC_2_SPC,LGUI_T(KC_LNG1), LALT_T(KC_C_BS),KC_1_ENT, KC_G_JA, KC_A_DEL
+             KC_A_DEL, CTL_T(KC_LNG2),KC_2_SPC,LGUI_T(KC_LNG1),   LALT_T(KC_BSPC),KC_1_ENT, KC_G_JA, KC_A_DEL
   //                 `----------+--------+---------+--------'   `--------+---------+--------+---------'
   ),
 
