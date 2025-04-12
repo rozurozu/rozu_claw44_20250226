@@ -47,8 +47,8 @@ enum layer_number {
 #define KC_C_BS LCTL_T(KC_BSPC)      // ctrl
 #define KC_ KC_TRNS
 #define KC_RST RESET
-#define KC_GAME2 LT(_GAME2, KC_DEL)   
-#define KC_OMG LT(_OMG, KC_0)   
+#define KC_GAME2 LT(_GAME2, KC_DEL)
+#define KC_OMG LT(_OMG, KC_0)
 
 // OSの状態を保存する変数
 static os_variant_t current_os_variant = OS_UNSURE;
@@ -131,7 +131,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+---------+--------+---------+--------|   |--------+---------+--------+---------+--------+--------|
      KC_LSFT, KC_Z   , KC_X    , KC_C   , KC_V    , KC_B   ,     KC_N   , KC_M    , KC_COMM, KC_DOT  , KC_SLSH, KC_RSFT,
   //`--------+--------+---------+--------+---------+--------/   \--------+---------+--------+---------+--------+--------'
-             KC_A_DEL, CTL_T(KC_LNG2),KC_2_SPC,LGUI_T(KC_LNG1),   LALT_T(KC_BSPC),KC_1_ENT, KC_G_JA, KC_A_DEL
+             KC_LALT, CTL_T(KC_LNG2),KC_2_SPC,LGUI_T(KC_LNG1),   LALT_T(KC_BSPC),KC_1_ENT, KC_LALT, KC_A_DEL
   //                 `----------+--------+---------+--------'   `--------+---------+--------+---------'
   ),
 
@@ -195,7 +195,7 @@ void render_layer_state(void) {
         case _GAME2:
             oled_write_ln_P(PSTR("Layer: Game2"), false);
             break;
-        
+
         // Mac用レイヤー
         case _MAC0:
             oled_write_ln_P(PSTR("Layer: Mac0"), false);
@@ -209,7 +209,7 @@ void render_layer_state(void) {
         case _MAC3:
             oled_write_ln_P(PSTR("Layer: Mac3"), false);
             break;
-            
+
         default:
             oled_write_ln_P(PSTR("Layer: Undefined"), false);
     }
@@ -275,7 +275,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 }
 
 oled_rotation_t oled_init_user(oled_rotation_t rotation) {
-    if (!is_keyboard_master()) return OLED_ROTATION_180; 
+    if (!is_keyboard_master()) return OLED_ROTATION_180;
     return rotation;
 }
 
@@ -283,7 +283,7 @@ void matrix_init_kb(void) {
     wait_ms(1000);
     // OSの検出を行う
     current_os_variant = detected_host_os();
-    
+
     // OSに応じてレイヤーを切り替え
     switch (current_os_variant) {
         case 3:
