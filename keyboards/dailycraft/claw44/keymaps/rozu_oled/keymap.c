@@ -49,6 +49,7 @@ enum layer_number {
 #define KC_RST RESET
 #define KC_GAME2 LT(_GAME2, KC_DEL)
 #define KC_OMG LT(_OMG, KC_0)
+#define KC_MAC3 LT(_MAC3, KC_0)
 
 enum custom_keycodes {
     MAC_MODE = SAFE_RANGE,
@@ -158,7 +159,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+--------+--------+--------+--------|   |--------+--------+--------+--------+--------+--------|
      KC_TRNS,  KC_PSLS  , KC_4   , KC_5   , KC_6  , KC_PPLS   , KC_PGUP, _______, _______, _______, _______, _______,
   //|--------+--------+--------+--------+--------+--------|   |--------+--------+--------+--------+--------+--------|
-      KC_OMG ,  KC_0  ,   KC_1  , KC_2,    KC_3,   KC_BSPC,     KC_PGDN, LGUI(KC_LEFT), _______, LGUI(KC_RIGHT) , KC_SLSH, _______,
+      KC_MAC3,  KC_0  ,   KC_1  , KC_2,    KC_3,   KC_BSPC,     KC_PGDN, LGUI(KC_LEFT), _______, LGUI(KC_RIGHT) , KC_SLSH, _______,
   //`--------+--------+--------+--------+--------+--------/   \--------+--------+--------+--------+--------+--------'
                        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS
   //                  `--------+--------+--------+--------'   `--------+--------+--------+--------
