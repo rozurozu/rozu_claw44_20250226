@@ -21,5 +21,5 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define MASTER_LEFT
 #define OLED_FONT_H "keyboards/dailycraft/claw44/lib/glcdfont.c"
 #define SSD1306OLED
-#define TAPPING_TERM 200
+#define TAPPING_TERM 150
 #define USE_SERIAL_PD2

@@ -50,6 +50,11 @@ enum layer_number {
 #define KC_GAME2 LT(_GAME2, KC_DEL)
 #define KC_OMG LT(_OMG, KC_0)
 
+enum custom_keycodes {
+    MAC_MODE = SAFE_RANGE,
+    WIN_MODE,
+};
+
 // OSの状態を保存する変数
 static os_variant_t current_os_variant = OS_UNSURE;
 
@@ -107,7 +112,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     //|--------+--------+--------+--------+--------+--------|   |--------+--------+--------+--------+--------+--------|
         KC_TAB, KC_LSFT,   KC_A,    KC_S,    KC_D,    KC_F,     KC_PGDN, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
     //|--------+--------+--------+--------+--------+--------|   |--------+--------+--------+--------+--------+--------|
-        KC_CAPS, KC_K,     KC_Z,    KC_X,    KC_C,    KC_V,     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+        KC_CAPS, KC_K,     KC_Z,    KC_X,    KC_C,    KC_V,     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, MAC_MODE,
     //`--------+--------+--------+--------+--------+--------/   \--------+--------+--------+--------+--------+--------'
                          KC_LCTL, KC_LALT, KC_SPC ,  KC_GAME2,   KC_TRNS, TG(_GAME1), KC_TRNS, KC_TRNS
     //                  `--------+--------+--------+--------'   `--------+--------+--------+--------'
@@ -131,7 +136,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+---------+--------+---------+--------|   |--------+---------+--------+---------+--------+--------|
      KC_LSFT, KC_Z   , KC_X    , KC_C   , KC_V    , KC_B   ,     KC_N   , KC_M    , KC_COMM, KC_DOT  , KC_SLSH, KC_RSFT,
   //`--------+--------+---------+--------+---------+--------/   \--------+---------+--------+---------+--------+--------'
-             KC_LALT, CTL_T(KC_LNG2),KC_2_SPC,LGUI_T(KC_LNG1),   LALT_T(KC_BSPC),KC_1_ENT, KC_LALT, KC_A_DEL
+             KC_LALT, CTL_T(KC_LNG2),KC_2_SPC,LGUI_T(KC_LNG1),   LALT_T(KC_BSPC),KC_1_ENT, KC_RALT, KC_A_DEL
   //                 `----------+--------+---------+--------'   `--------+---------+--------+---------'
   ),
 
@@ -165,7 +170,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     //|--------+--------+--------+--------+--------+--------|   |--------+--------+--------+--------+--------+--------|
         KC_TRNS, KC_TRNS, KC_F4,   KC_F5,   KC_F6,   KC_F11,     KC_PGDN, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
     //|--------+--------+--------+--------+--------+--------|   |--------+--------+--------+--------+--------+--------|
-        KC_TRNS, KC_TRNS, KC_F1,   KC_F2,   KC_F3,   KC_F10,     KC_CAPS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+        KC_TRNS, KC_TRNS, KC_F1,   KC_F2,   KC_F3,   KC_F10,     KC_CAPS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, WIN_MODE,
     //`--------+--------+--------+--------+--------+--------/   \--------+--------+--------+--------+--------+--------'
                          KC_TRNS, KC_TRNS, KC_TRNS , KC_TRNS,     KC_PSCR, KC_TRNS, KC_TRNS, KC_TRNS
     //                  `--------+--------+--------+--------'   `--------+--------+--------+--------'
@@ -264,13 +269,25 @@ bool oled_task_user(void) {
 }
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-    if (record->event.pressed) {
-        set_keylog(keycode, record);
-    }
+    // if (record->event.pressed) {
+    //     set_keylog(keycode, record);
+    // }
     //デバッグ用
     // current_os_variant = detected_host_os();
     // uprintf("current_layer: %d\n", get_highest_layer(layer_state));
     // uprintf("current_os_variant: %d\n", current_os_variant);
+    if (record->event.pressed) {
+        switch (keycode) {
+            case MAC_MODE:
+                layer_clear();
+                layer_on(_MAC0);
+                return false;
+            case WIN_MODE:
+                layer_clear();
+                layer_on(_QWERTY);
+                return false;
+        }
+    }
     return true;
 }
 
@@ -280,9 +297,10 @@ oled_rotation_t oled_init_user(oled_rotation_t rotation) {
 }
 
 void matrix_init_kb(void) {
-    wait_ms(1000);
+    wait_ms(800);
     // OSの検出を行う
     current_os_variant = detected_host_os();
+    uprintf("Detected OS: %d\n", current_os_variant);
 
     // OSに応じてレイヤーを切り替え
     switch (current_os_variant) {
@@ -301,5 +319,6 @@ void matrix_init_kb(void) {
             break;
     }
 }
+
 
 #endif
